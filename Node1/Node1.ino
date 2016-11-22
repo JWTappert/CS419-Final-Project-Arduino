@@ -1,14 +1,14 @@
-#include <SoftwareSerial.h>
+//#include <SoftwareSerial.h>
 #include <MsTimer2.h>
 
-SoftwareSerial XBee(2, 3);
-
-#define aref_voltage 3.3
+//SoftwareSerial XBee(2, 3);
 
 #define TMP_SNS A0
+#define node_id "0"
 
-float avgTemp = 0.0;
-short counter = 0;
+float avgTemp1 = 0.0, avgTemp2 = 0.0;
+float counter1 = 0, counter2 = 0;
+bool bArray = true;
 
 
 void setup() {
@@ -21,40 +21,57 @@ void setup() {
   MsTimer2::set(1000, getFahrenheit);
   MsTimer2::start();
 
-  // If you want to set the aref to something other than 5v
-  //analogReference(EXTERNAL);
-
-  XBee.begin(9600);
+  //XBee.begin(9600);
 
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-}
 
-float readTemp()
-{
-  long rd = 0;
-
-  for(short i = 0; i < 10; i++)
+  if(Serial.available())
   {
-    rd += analogRead(TMP_SNS);
-    delay(20);
+    char arg = "";
+
+    //While there is something in the serial buffer
+    //pull it out one byte at a time
+    while (Serial.available())
+    {
+      //Read the byte
+      arg = Serial.read();
+
+      if(arg == 'R')
+      {
+        arg = Serial.read();
+
+        if(arg == node_id)
+        {
+          bArray = !bArray;
+          TxData();
+        }
+      }   
+    }
   }
-  return rd/10.0;
 }
 
-float getVoltage()
+void TxData()
 {
-    return (readTemp() * 5.0) / 1024.0;
+  //Send this shit
+  if(bArray)
+  {
+    //Use queue2
+    Serial.println(avgTemp2 / (float)counter2);
+    avgTemp2 = 0;
+    counter2 = 0;
+    
+  }else if(!bArray){
+    //Use queue1
+    Serial.println(avgTemp1 / (float)counter1);
+    avgTemp1 = 0;
+    counter1 = 0;
+  }
 }
 
-float getCelsius()
-{
-    return (getVoltage() - 0.5) / 100.0;
-}
-
-float getFahrenheit()
+void getFahrenheit()
 {
   int reading = 0;
 
@@ -64,6 +81,7 @@ float getFahrenheit()
   for(int i = 0; i < 100; i++)
   {
     reading += analogRead(TMP_SNS);
+    delay(20);
   }
   reading /= 100.0;
  
@@ -82,27 +100,17 @@ float getFahrenheit()
   float temperatureF = (temperatureC * 9.0 / 5.0) + 32.0;
   Serial.print(temperatureF); Serial.println(" degrees F");
 
-  avgTemp += temperatureF;
-  counter++;
-
-  if(counter == 60)
+  if(bArray)
   {
-    Serial.print("THIS IS THE AVG: ");
-    Serial.println(avgTemp / 60.0);
-    avgTemp = 0;
-    counter = 0;
-  }
-    /*float temp = (getCelsius() * 9.0/5.0) + 32.0;
-    Serial.println(temp);
-    avgTemp += temp;
-    counter++;
+    avgTemp1 += temperatureF;
+    counter1++;
 
-    if(counter == 9)
-    {
-      counter = 0;
-      Serial.println(avgTemp / 10.000);
-      avgTemp = 0;
-    }*/
-    return temperatureF;
+  }else if(!bArray)
+  {
+    avgTemp2 += temperatureF;
+    counter2++;
+  }
+
+
 }
 
