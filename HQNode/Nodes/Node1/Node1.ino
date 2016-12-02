@@ -1,6 +1,6 @@
 #include "SparkFun_Si7021_Breakout_Library.h"
 
-#define node_id "0"
+#define node_id '1'
 
 float avgTemp1 = 0.0, avgTemp2 = 0.0;
 float counter1 = 0, counter2 = 0;
@@ -44,13 +44,15 @@ void loop() {
       arg = Serial.read();
 
       //THe master will broadcast an R when it's Request data from a node
-      if(arg == 'R')
+      if(arg == node_id)
       {
-        arg = Serial.read();
+        //Serial.print("R recieved");
+        //arg = Serial.read();
 
         //The R will be followed with the node it is requesting data from
-        if(arg == node_id)
-        {
+        //if(arg == node_id)
+        //{
+          //Serial.print("0 processed");
           //Throw away data recorded from last request
           if(bArray)
           {
@@ -64,11 +66,13 @@ void loop() {
           //Switch what variables we will use to record data on next period
           bArray = !bArray;
           TxData(); //Send data
-        }
+        //}
         
       }else if(arg == 'S'){ //Start recording data
+        //Serial.print("S recieved");
         bReady = true;   
       }else if(arg == 'T'){ //Stop recording data
+        //Serial.print("T recieved");
         bReady = false;
       }else if(arg == 'E'){ //Retransmission request
 
@@ -93,6 +97,8 @@ void loop() {
 
       //Get the current temperature
       temp = sensor.getTempF();
+
+      //Serial.print(temp);
       
       //Update time of last reading
       lastReading = millis();
@@ -128,6 +134,7 @@ void Retransmit()
 
 void TxData()
 {
+  //Serial.println("Tx'n");
   //Send this shit
   if(bArray)
   {
