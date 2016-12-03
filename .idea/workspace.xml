@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0f1610f2-0b7b-4160-b374-2573be849f7d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/baseStation.py" afterPath="$PROJECT_DIR$/baseStation.py" />
     </list>
     <ignored path="finalProj.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -26,30 +26,18 @@
       <file leaf-file-name="baseStation.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/baseStation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="586">
-              <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
+            <state relative-caret-position="435">
+              <caret line="146" column="56" selection-start-line="146" selection-start-column="56" selection-end-line="146" selection-end-column="56" />
               <folding>
-                <element signature="e#20#30#0" expanded="true" />
-                <marker date="1480570892000" expanded="true" signature="764:778" ph="SELECT * FRO... YOUR_TABLE_NAME" />
-                <marker date="1480570892000" expanded="true" signature="764:786" ph="SELECT * FRO... readings" />
-                <marker date="1480570892000" expanded="true" signature="1440:1483" ph="INSERT INTO readings... " />
-                <marker date="1480570892000" expanded="true" signature="1440:1484" ph="INSERT INTO readings... " />
-                <marker date="1480570892000" expanded="true" signature="1519:1562" ph="INSERT INTO readings... " />
-                <marker date="1480570892000" expanded="true" signature="1519:1563" ph="INSERT INTO readings... " />
-                <marker date="1480570892000" expanded="true" signature="1519:1571" ph="INSERT INTO readings... " />
-                <marker date="1480570892000" expanded="true" signature="1519:1572" ph="INSERT INTO readings... " />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="baseStation.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../hw05/baseStation.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1500">
-              <caret line="104" column="0" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
-              <folding>
-                <element signature="e#19#29#0" expanded="true" />
+                <element signature="e#20#36#0" expanded="true" />
+                <marker date="1480723726000" expanded="true" signature="913:927" ph="SELECT * FRO... YOUR_TABLE_NAME" />
+                <marker date="1480723726000" expanded="true" signature="913:935" ph="SELECT * FRO... readings" />
+                <marker date="1480723726000" expanded="true" signature="3278:3330" ph="INSERT INTO readings... " />
+                <marker date="1480723726000" expanded="true" signature="3432:3484" ph="INSERT INTO readings... " />
+                <marker date="1480723726000" expanded="true" signature="4582:4625" ph="INSERT INTO readings... " />
+                <marker date="1480723726000" expanded="true" signature="4665:4717" ph="INSERT INTO readings... " />
+                <marker date="1480723726000" expanded="true" signature="4856:4899" ph="INSERT INTO readings... " />
+                <marker date="1480723726000" expanded="true" signature="4935:4987" ph="INSERT INTO readings... " />
               </folding>
             </state>
           </provider>
@@ -426,7 +414,9 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -435,15 +425,15 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#20#30#0" expanded="true" />
-            <marker date="1480570892000" expanded="true" signature="764:778" ph="SELECT * FRO... YOUR_TABLE_NAME" />
-            <marker date="1480570892000" expanded="true" signature="764:786" ph="SELECT * FRO... readings" />
-            <marker date="1480570892000" expanded="true" signature="1440:1483" ph="INSERT INTO readings... " />
-            <marker date="1480570892000" expanded="true" signature="1440:1484" ph="INSERT INTO readings... " />
-            <marker date="1480570892000" expanded="true" signature="1519:1562" ph="INSERT INTO readings... " />
-            <marker date="1480570892000" expanded="true" signature="1519:1563" ph="INSERT INTO readings... " />
-            <marker date="1480570892000" expanded="true" signature="1519:1571" ph="INSERT INTO readings... " />
-            <marker date="1480570892000" expanded="true" signature="1519:1572" ph="INSERT INTO readings... " />
+            <element signature="e#20#36#0" expanded="true" />
+            <marker date="1480723726000" expanded="true" signature="913:927" ph="SELECT * FRO... YOUR_TABLE_NAME" />
+            <marker date="1480723726000" expanded="true" signature="913:935" ph="SELECT * FRO... readings" />
+            <marker date="1480723726000" expanded="true" signature="3278:3330" ph="INSERT INTO readings... " />
+            <marker date="1480723726000" expanded="true" signature="3432:3484" ph="INSERT INTO readings... " />
+            <marker date="1480723726000" expanded="true" signature="4582:4625" ph="INSERT INTO readings... " />
+            <marker date="1480723726000" expanded="true" signature="4665:4717" ph="INSERT INTO readings... " />
+            <marker date="1480723726000" expanded="true" signature="4856:4899" ph="INSERT INTO readings... " />
+            <marker date="1480723726000" expanded="true" signature="4935:4987" ph="INSERT INTO readings... " />
           </folding>
         </state>
       </provider>
@@ -468,7 +458,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../hw05/baseStation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1500">
+        <state relative-caret-position="346">
           <caret line="104" column="0" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
           <folding>
             <element signature="e#19#29#0" expanded="true" />
@@ -486,18 +476,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/baseStation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="586">
-          <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
+        <state relative-caret-position="435">
+          <caret line="146" column="56" selection-start-line="146" selection-start-column="56" selection-end-line="146" selection-end-column="56" />
           <folding>
-            <element signature="e#20#30#0" expanded="true" />
-            <marker date="1480570892000" expanded="true" signature="764:778" ph="SELECT * FRO... YOUR_TABLE_NAME" />
-            <marker date="1480570892000" expanded="true" signature="764:786" ph="SELECT * FRO... readings" />
-            <marker date="1480570892000" expanded="true" signature="1440:1483" ph="INSERT INTO readings... " />
-            <marker date="1480570892000" expanded="true" signature="1440:1484" ph="INSERT INTO readings... " />
-            <marker date="1480570892000" expanded="true" signature="1519:1562" ph="INSERT INTO readings... " />
-            <marker date="1480570892000" expanded="true" signature="1519:1563" ph="INSERT INTO readings... " />
-            <marker date="1480570892000" expanded="true" signature="1519:1571" ph="INSERT INTO readings... " />
-            <marker date="1480570892000" expanded="true" signature="1519:1572" ph="INSERT INTO readings... " />
+            <element signature="e#20#36#0" expanded="true" />
+            <marker date="1480723726000" expanded="true" signature="913:927" ph="SELECT * FRO... YOUR_TABLE_NAME" />
+            <marker date="1480723726000" expanded="true" signature="913:935" ph="SELECT * FRO... readings" />
+            <marker date="1480723726000" expanded="true" signature="3278:3330" ph="INSERT INTO readings... " />
+            <marker date="1480723726000" expanded="true" signature="3432:3484" ph="INSERT INTO readings... " />
+            <marker date="1480723726000" expanded="true" signature="4582:4625" ph="INSERT INTO readings... " />
+            <marker date="1480723726000" expanded="true" signature="4665:4717" ph="INSERT INTO readings... " />
+            <marker date="1480723726000" expanded="true" signature="4856:4899" ph="INSERT INTO readings... " />
+            <marker date="1480723726000" expanded="true" signature="4935:4987" ph="INSERT INTO readings... " />
           </folding>
         </state>
       </provider>

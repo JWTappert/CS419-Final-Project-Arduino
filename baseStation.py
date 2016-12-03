@@ -1,5 +1,6 @@
 # !/usr/bin/python
 
+import threading
 import sys
 import serial
 import signal
@@ -18,12 +19,18 @@ port = sys.argv[1]
 # Register signal and define signal function
 def signal_handler(signal, frame):
     print '\nExiting with the highest amount of grace'
+
+    # Make sure nodes stop collecting data
+    ser.write("T")
+
+    # Close serial port and exit
     ser.close()
     sys.exit(0)
 
 
 signal.signal(signal.SIGINT, signal_handler)
 
+# Establish connection to database
 db = MySQLdb.connect(host='localhost',
                      user='root',
                      passwd='',
@@ -47,7 +54,8 @@ sys.exit(0)
 '''
 
 try:
-    ser = serial.Serial(port, 9600)
+    # Open up the serial port with a 2 second timeout
+    ser = serial.Serial(port, 9600, timeout=2.0)
     print "Serial port opened successfully."
 
     # Take a quick nap
@@ -56,22 +64,130 @@ except:
     print "Unable to open serial port, closing."
     sys.exit(1)
 
-time.sleep(5)
+
+'''
+This function will execute once every 60 seconds.
+
+As a parameter you need to pass what node it will be collecting data for.
+
+If the data received is less than 5 characters that means a partial packet
+was received or the timeout was reached and nothing was received.
+
+In that case several more attempts will be made to collect the data.
+
+Once all attempts have been made then the data will be passed along for storage
+'''
+
+
+def get_reading(node_id):
+
+    # Set timer for 60 seconds on this function with parameter passed
+    threading.Timer(60.0, get_reading(node_id)).start()
+
+    # Variable to track number of attempts made so far
+    nAttempts = 0
+
+    print "sending request for data...", node_id
+    # Send broadcast stating what node needs to Tx
+    ser.write(node_id)
+    print "request sent...", node_id
+    # Read Tx from node
+    data = ser.read(5)
+    nAttempts += 1
+
+    # Verify expected value was received, if not make 3 more attempts
+    # Since this is being deployed in a home we can expect the temperature
+    # to be in the double digits, and we are recording to the hundredth degree
+    # plus the point makes 5 characters
+    # If data isn't 5 characters then either partial data was received, no data
+    # was received, or everyone in the house has left because it is too cold/hot
+    while len(data) < 5 and nAttempts < 4:
+        nAttempts += 1
+        print "shit got fucked"
+        print "sending ANOTHER request for data...", node_id
+        ser.write("S")
+        ser.write("0")
+        print "request sent...", node_id
+        data = ser.read(5)
+
+    # Send off the data for storage
+    store_data(node_id, data)
+
+
+def store_data(node_id, temp):
+
+    # If the data is still less than 5 here then after 4 attempts nothing was
+    # received & data loss has occurred, store a dummy value that can be easily
+    # ignore later
+    if len(temp) < 5:
+        cur.execute("INSERT INTO readings (node_id, temp) VALUES (%s, %s) ", (0, 666.0))
+        db.commit()
+
+    # Store data in connected db
+    print temp
+    cur.execute("INSERT INTO readings (node_id, temp) VALUES (%s, %s) ", (node_id, temp))
+    db.commit()
+
+    # Flush out anything left in the serial buffer
+    ser.flushInput()
+    ser.flushOutput()
+
+
+# Flush out serial buffers before starting, then broadcast Start to all nodes
 ser.flushInput()
 ser.flushOutput()
 time.sleep(.1)
 print "starting..."
 ser.write("S")
-print "waiting 60 seconds..."
-time.sleep(60)
-print "sending request for data..."
-ser.write("R0")
-print "request sent..."
 
+'''
+Start timers for each node. In this case node 0 will be asked to Tx after 60s
+and node 1 will be asked to Tx after 75s.
 
+From that point forward each node will Tx data every 60s.
+'''
+get_reading("0")
+time.sleep(15)
+get_reading("1")
+
+'''
 while True:
+    print "waiting 5 seconds..."
+    time.sleep(5)
+
+    data = get_reading("0")
+
+    isFake = store_data(data)
+
+    if isFake:
+        continue
+
+    print "sending request for data..."
+    ser.write("0")
+    print "request sent..."
     data = ser.read(5)
+
+    while len(data) < 5 and nAttempts < 2:
+        nAttempts += 1
+        print "shit got fucked"
+        print "sending ANOTHER request for data..."
+        ser.write("S")
+        ser.write("0")
+        print "request sent..."
+        data = ser.read(5)
+
+    if len(data) < 5:
+        q = "INSERT INTO readings (node_id, temp) VALUES ".format(0, data)
+        cur.execute("INSERT INTO readings (node_id, temp) VALUES (%s, %s) ", (0, 666.0))
+        db.commit()
+        continue
+
+    nAttempts = 0
+    ser.flushInput()
+    ser.flushOutput()
     print data
     q = "INSERT INTO readings (node_id, temp) VALUES ".format(0, data)
     cur.execute("INSERT INTO readings (node_id, temp) VALUES (%s, %s) ", (0, data))
     db.commit()
+'''
+

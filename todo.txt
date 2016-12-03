@@ -1,0 +1,21 @@
+### Arduino
+
+- Build two more sensor nodes and deploy them
+
+
+### Basestattion
+
+- Make it work with 3 nodes
+
+
+
+### WebApp
+
+- Visualize data
+- Sned email if one room deivates by more than 1 degrees from node 1
+
+
+### General
+
+- Finish state diagrams
+- Document all code
