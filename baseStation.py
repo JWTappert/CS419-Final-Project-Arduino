@@ -1,11 +1,14 @@
 # !/usr/bin/python
 
 import threading
+import smtplib
 import sys
 import serial
 import signal
 import time
 import MySQLdb
+
+from email.mime.text import MIMEText
 
 # Make sure usage is correct
 if len(sys.argv) != 2:
@@ -114,6 +117,7 @@ def get_reading(node_id):
     store_data(node_id, data)
 
 
+# This function will add data to the db we are connected to
 def store_data(node_id, temp):
 
     # If the data is still less than 5 here then after 4 attempts nothing was
@@ -131,6 +135,23 @@ def store_data(node_id, temp):
     # Flush out anything left in the serial buffer
     ser.flushInput()
     ser.flushOutput()
+
+def send_email(isCold):
+
+    msg = ""
+
+    if isCold:
+        msg = MIMEText("The room is too cold!")
+    else:
+        msg = MIMEText("The room is too hot!")
+
+    msg['Subject'] = "Temp Notification"
+    msg['From'] = "duquetteadam@gmail.com"
+    msg['To'] = "duquetteadam@gmail.com"
+
+    s = smtplib.SMTP('localhost')
+    s.sendmail("duquetteadam@gmail.com", "duquetteadam@gmail.com", msg.as_string())
+    s.quit()
 
 
 # Flush out serial buffers before starting, then broadcast Start to all nodes
