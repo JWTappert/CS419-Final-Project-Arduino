@@ -85,15 +85,19 @@ Once all attempts have been made then the data will be passed along for storage
 def get_reading(node_id):
 
     # Set timer for 60 seconds on this function with parameter passed
-    threading.Timer(60.0, get_reading(node_id)).start()
+    threading.Timer(interval=60, function=get_reading, args=[node_id]).start()
+
+    # Flush out anything left in the serial buffer
+    ser.flushInput()
+    ser.flushOutput()
 
     # Variable to track number of attempts made so far
     nAttempts = 0
 
-    print "sending request for data...", node_id
+    # print "sending request for data...", node_id
     # Send broadcast stating what node needs to Tx
     ser.write(node_id)
-    print "request sent...", node_id
+    # print "request sent...", node_id
     # Read Tx from node
     data = ser.read(5)
     nAttempts += 1
@@ -106,14 +110,15 @@ def get_reading(node_id):
     # was received, or everyone in the house has left because it is too cold/hot
     while len(data) < 5 and nAttempts < 4:
         nAttempts += 1
-        print "shit got fucked"
-        print "sending ANOTHER request for data...", node_id
+        # print "shit got fucked"
+        # print "sending ANOTHER request for data...", node_id
         ser.write("S")
         ser.write("0")
-        print "request sent...", node_id
+        # print "request sent...", node_id
         data = ser.read(5)
 
     # Send off the data for storage
+    # print "Node: ", node_id, "data: ", data
     store_data(node_id, data)
 
 
@@ -128,7 +133,6 @@ def store_data(node_id, temp):
         db.commit()
 
     # Store data in connected db
-    print temp
     cur.execute("INSERT INTO readings (node_id, temp) VALUES (%s, %s) ", (node_id, temp))
     db.commit()
 
@@ -160,6 +164,7 @@ ser.flushOutput()
 time.sleep(.1)
 print "starting..."
 ser.write("S")
+time.sleep(5) # Give the nodes some time to get things started
 
 '''
 Start timers for each node. In this case node 0 will be asked to Tx after 60s
