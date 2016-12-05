@@ -164,7 +164,7 @@ ser.flushOutput()
 time.sleep(.1)
 print "starting..."
 ser.write("S")
-time.sleep(5) # Give the nodes some time to get things started
+time.sleep(5)  # Give the nodes some time to get things started
 
 '''
 Start timers for each node. In this case node 0 will be asked to Tx after 60s

@@ -1,22 +1,20 @@
 ### Arduino
 
-- Build one more sensor node and deploy it 
-
 
 ### Basestattion
-
-- Make it work with 2 nodes
-  - Code written, need to test
-
-
-
-### WebApp
-
-- Visualize data
-- Send email if one room deivates by more than 1 degrees from node 1
 
 
 ### General
 
 - Finish state diagrams
 - Document all code
+  - baseStation DONE
+
+### WebApp
+
+- Visualize data
+- Send email if one room deivates by more than 1 degrees from node 1
+- Add timestamp next to current temp reading
+- Add google chart
+- Setup email notification script
+
