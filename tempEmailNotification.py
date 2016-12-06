@@ -30,7 +30,7 @@ signal.signal(signal.SIGINT, signal_handler)
 # Establish connection to database
 db = MySQLdb.connect(host='localhost',
                      user='root',
-                     passwd='',
+                     passwd='Rubean1',
                      db='tempReadings')
 
 # you must create a Cursor object. It will let
@@ -58,16 +58,34 @@ def send_email(isCold):
 
 def check_readings():
 
-    # Set timer for 60 seconds on this function with parameter passed
-    threading.Timer(120.0, check_readings()).start()
-
-    # http://stackoverflow.com/questions/1313120/retrieving-the-last-record-in-each-group
-    # ^^possible solution?
+    # Set timer for 120 seconds on this function with parameter passed
+    threading.Timer(120.0, check_readings).start()
 
     # Get last 5 entries from node0 and node1
+    cur.execute("SELECT temp FROM readings WHERE node_id=%s ORDER BY time DESC LIMIT 5", (str(0)))
+    node0 = cur.fetchall()
+
+    cur.execute("SELECT temp FROM readings WHERE node_id=%s ORDER BY time DESC LIMIT 5", (str(1)))
+    node1 = cur.fetchall()
+
+    avgTemp0 = 0.0
+    avgTemp1 = 0.0
+
     # Average them
+    for n in xrange(0, cur.rowcount):
+        avgTemp0 += node0[n][0]
+        avgTemp1 += node1[n][0]
+
+    avgTemp0 = avgTemp0/cur.rowcount
+    avgTemp1 = avgTemp1/cur.rowcount
+
+    res = avgTemp0 - avgTemp1
 
     # if node0 - node1 > 2 then send_email(True)
     # if node0 - node1 < -2 then send_email(False)
+    if res > 2:
+        send_email(True)
+    elif res < -2:
+        send_email(False)
 
-send_email(False)
+check_readings()

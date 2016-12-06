@@ -140,23 +140,6 @@ def store_data(node_id, temp):
     ser.flushInput()
     ser.flushOutput()
 
-def send_email(isCold):
-
-    msg = ""
-
-    if isCold:
-        msg = MIMEText("The room is too cold!")
-    else:
-        msg = MIMEText("The room is too hot!")
-
-    msg['Subject'] = "Temp Notification"
-    msg['From'] = "duquetteadam@gmail.com"
-    msg['To'] = "duquetteadam@gmail.com"
-
-    s = smtplib.SMTP('localhost')
-    s.sendmail("duquetteadam@gmail.com", "duquetteadam@gmail.com", msg.as_string())
-    s.quit()
-
 
 # Flush out serial buffers before starting, then broadcast Start to all nodes
 ser.flushInput()
@@ -175,45 +158,3 @@ From that point forward each node will Tx data every 60s.
 get_reading("0")
 time.sleep(15)
 get_reading("1")
-
-'''
-while True:
-    print "waiting 5 seconds..."
-    time.sleep(5)
-
-    data = get_reading("0")
-
-    isFake = store_data(data)
-
-    if isFake:
-        continue
-
-    print "sending request for data..."
-    ser.write("0")
-    print "request sent..."
-    data = ser.read(5)
-
-    while len(data) < 5 and nAttempts < 2:
-        nAttempts += 1
-        print "shit got fucked"
-        print "sending ANOTHER request for data..."
-        ser.write("S")
-        ser.write("0")
-        print "request sent..."
-        data = ser.read(5)
-
-    if len(data) < 5:
-        q = "INSERT INTO readings (node_id, temp) VALUES ".format(0, data)
-        cur.execute("INSERT INTO readings (node_id, temp) VALUES (%s, %s) ", (0, 666.0))
-        db.commit()
-        continue
-
-    nAttempts = 0
-    ser.flushInput()
-    ser.flushOutput()
-    print data
-    q = "INSERT INTO readings (node_id, temp) VALUES ".format(0, data)
-    cur.execute("INSERT INTO readings (node_id, temp) VALUES (%s, %s) ", (0, data))
-    db.commit()
-'''
-
